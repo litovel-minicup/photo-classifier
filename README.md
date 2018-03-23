@@ -1,5 +1,30 @@
 # Photo classifier
 Toolkit for classification sport photos into classes representing each sport teams.
+### Planned classificator schema
+```
+                                 +-----+
+                                 /INPUT|
+                                /+---\-+
+                               /      -\
+   +------------------------+ /         -\
+   |                        |/       +--------------------+         +------------------+
+   | Object detector (FASA) -        |                    |         |                  |
+   |                        |        | Team info provider |         |  Upload, persist |
+   +------------|-----------+        |                    |         |                  |
+                |                    +----------\---------+         +------------------+
+                |                                \                         -/
+   +------------|-----------+                     | +------------------+ -/
+   |                        |                     \ |                  -/
+   | "Average" object color |                      \|  Photo classifier|
+   |                        |                       |                  -\
+   +------------|-----------+                       +------------------+ --\
+                |                                               -/          -\
+   +------------|-----------+    +------------------------+   -/          +-------+
+   |                        |    |                        | -/            |       |
+   |  HSL convert, rescale  -----| Hue bucket selection   -/              |  GUI  |
+   |                        |    |                        |               |       |
+   +------------------------+    +------------------------+               +-------+
+```
 
 
 ### Usage
