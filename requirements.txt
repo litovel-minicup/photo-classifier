@@ -33,3 +33,5 @@ mysqlclient
 scp
 paramiko
 h5py
+easydict
+munkres

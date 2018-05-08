@@ -104,3 +104,5 @@ ENV/
 # custom
 data/
 .idea/
+!minicup_photo_classifier/lib/
+models/*

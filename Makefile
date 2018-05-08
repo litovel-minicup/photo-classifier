@@ -5,6 +5,7 @@ download: a0ae577d85.jpg a0b8ffa2c7.jpg a0cc8c42de.jpg a0dfbb3778.jpg a0f91acf87
 install:
 	test -d .venv || pyvenv .venv
 	./.venv/bin/pip install -r requirements.txt
+	make build
 
 prepare:
 	mkdir -p data/
@@ -14,3 +15,17 @@ prepare:
 
 clean:
 	rm -rf data/
+
+
+build:
+	cd minicup_photo_classifier/lib/nms_cython && python setup.py build_ext --inplace
+	cd minicup_photo_classifier/lib/multicut_cython && python setup.py build_ext --inplace
+
+.ONESHELL:
+download-models:
+	mkdir -p models && cd models
+	curl -L -O https://datasets.d2.mpi-inf.mpg.de/deepercut-models-tensorflow/coco-resnet-101.data-00000-of-00001
+	curl -L -O https://datasets.d2.mpi-inf.mpg.de/deepercut-models-tensorflow/coco-resnet-101.meta
+	curl -L -O https://datasets.d2.mpi-inf.mpg.de/deepercut-models-tensorflow/coco-resnet-101.index
+	curl -L -O https://datasets.d2.mpi-inf.mpg.de/deepercut-models-tensorflow/pairwise_coco.tar.gz
+	tar xvzf pairwise_coco.tar.gz

@@ -24,7 +24,8 @@ if __name__ == '__main__':
     )
 
     tag_downloader.download_by_filter(
-        Q(year__slug='2017', team_info_tag__category__slug='mladsi') & ~Q(slug__contains='tatran-litovel'),
-        target_dir='other',
+        Q(year__slug='2017', team_info_tag__category__slug='mladsi') & ~Q(slug__contains='tatran-litovel') & Q(
+            team_info_tag__isnull=False),
+        target_dir='others',
         photo_limit=120,
     )
