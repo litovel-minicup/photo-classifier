@@ -13,8 +13,10 @@ from .pose_detection.predict import SpatialModel, eval_graph, get_person_conf_mu
 
 class ObjectDetector(object):
     """
-    Class for detecting biggest and main objects in image.
+    Class for detecting figure parts on image.
     """
+
+    PERSON_CONF_HANDS_SELECTOR = slice(5, 8 + 1)
 
     def __init__(self):
         self._config = load_config(join(dirname(__file__), 'config/config.yaml'))
@@ -26,23 +28,34 @@ class ObjectDetector(object):
         self._session, self._model_inputs, self._model_outputs = setup_pose_prediction(self._config)
 
     def detect_objects(self, image: np.ndarray) -> List[np.ndarray]:
+        """
+        For each figure on image returns np.array of [Lshoulder, Rshoulder, Lelbow, Relbow].
+        Each component has [x, y], for not found parts [0, 0] is placed.
+        :param image: image to detect
+        :return: all found parts
+        """
         image_batch = self._image_to_data(image)
 
         # Compute prediction with the CNN
         outputs_np = self._session.run(self._model_outputs, feed_dict={self._model_inputs: image_batch})
-        scmap, locref, pairwise_diff = extract_cnn_output(outputs_np, self._config, self._dataset.pairwise_stats)
+        sc_map, loc_ref, pairwise_diff = extract_cnn_output(outputs_np, self._config, self._dataset.pairwise_stats)
 
-        detections = extract_detections(self._config, scmap, locref, pairwise_diff)
-        unLab, pos_array, unary_array, pwidx_array, pw_array = eval_graph(self._spatial_model, detections)
-        person_conf_multi = get_person_conf_multicut(self._spatial_model, unLab, unary_array, pos_array)
+        detections = extract_detections(self._config, sc_map, loc_ref, pairwise_diff)
+        un_label, pos_array, unary_array, p_w_idx_array, pw_array = eval_graph(self._spatial_model, detections)
 
-        return person_conf_multi
         return [
-            np.array(range(42))
+            person[self.PERSON_CONF_HANDS_SELECTOR].astype(int)
+            for person in
+            get_person_conf_multicut(self._spatial_model, un_label, unary_array, pos_array)
         ]
 
     @staticmethod
     def _image_to_data(image):
+        """
+        Expands image to data vector.
+        :param image: image
+        :return: reshaped
+        """
         return np.expand_dims(image, axis=0).astype(float)
 
 
