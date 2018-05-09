@@ -16,7 +16,7 @@ class ObjectDetector(object):
     Class for detecting figure parts on image.
     """
 
-    PERSON_CONF_HANDS_SELECTOR = slice(5, 8 + 1)
+    PERSON_CONF_HANDS_SELECTOR = slice(5, 8 + 1 - 2)
 
     def __init__(self):
         self._config = load_config(join(dirname(__file__), 'config/config.yaml'))

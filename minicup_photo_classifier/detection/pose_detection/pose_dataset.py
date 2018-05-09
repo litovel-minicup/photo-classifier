@@ -65,10 +65,6 @@ def collect_pairwise_stats(joint_id, coords):
 
 
 def load_pairwise_stats(cfg):
-    print(join(
-            PACKAGE_ROOT,
-            cfg.pairwise_stats_fn
-        ))
     mat_stats = sio.loadmat(
         join(
             PACKAGE_ROOT,
