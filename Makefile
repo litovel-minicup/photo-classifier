@@ -18,8 +18,8 @@ clean:
 
 
 build:
-	cd minicup_photo_classifier/lib/nms_cython && python setup.py build_ext --inplace
-	cd minicup_photo_classifier/lib/multicut_cython && python setup.py build_ext --inplace
+	(cd minicup_photo_classifier/lib/nms_cython && python setup.py build_ext --inplace)
+	(cd minicup_photo_classifier/lib/multicut_cython && python setup.py build_ext --inplace)
 
 .ONESHELL:
 download-models:

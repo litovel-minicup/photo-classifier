@@ -1,3 +1,4 @@
+import logging
 import math
 import os
 import sys
@@ -207,7 +208,7 @@ def get_person_conf_multicut(sm, unLab, unary_array, pos_array):
         person_conf[pidx, kidx, :] += pos_array[didx, :] * unary_array[didx]
         sum_prob[pidx, kidx] += unary_array[didx]
 
-    print("num_people: ", num_people)
+    logging.debug("num_people: {}".format(num_people))
 
     for pidx in range(num_people):
         for kidx in range(sm.num_keypoints):

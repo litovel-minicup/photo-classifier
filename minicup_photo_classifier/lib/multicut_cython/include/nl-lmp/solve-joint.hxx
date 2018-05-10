@@ -537,7 +537,7 @@ Solution update_labels_and_multicut(Problem<GRAPH> const& problem, Solution cons
 
     double current_obj_value = compute_obj_value(buffer.class_labels, buffer.cluster_labels);
 
-    std::cout << "starting objective: " << std::fixed << current_obj_value << std::endl;
+    std::cerr << "starting objective: " << std::fixed << current_obj_value << std::endl;
 
     // we might need to rollback to a previous solution, so keep it
     auto last_good_class_labels = buffer.class_labels;
@@ -677,13 +677,13 @@ Solution update_labels_and_multicut(Problem<GRAPH> const& problem, Solution cons
 
         visitor(buffer.cluster_labels, buffer.class_labels);
 
-        std::cout << "....pair updates: " << pair_updates_decrease << std::endl;
-        std::cout << "....new sets: " << new_sets_decrease << std::endl;
+        std::cerr << "....pair updates: " << pair_updates_decrease << std::endl;
+        std::cerr << "....new sets: " << new_sets_decrease << std::endl;
 
         if (problem.numberOfClasses() > 1)
-            std::cout << "....updating class labels: " << update_labels_decrease << std::endl;
+            std::cerr << "....updating class labels: " << update_labels_decrease << std::endl;
         
-        std::cout << "..new objective: " << current_obj_value << std::endl;
+        std::cerr << "..new objective: " << current_obj_value << std::endl;
         
         class_labels_for_changed_thing = last_good_class_labels;
         cluster_labels_for_changed_thing = last_good_cluster_labels;
