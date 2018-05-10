@@ -1,9 +1,9 @@
 # coding=utf-8
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Iterable
 
-from minicup_administration.core.models import Category, TeamInfo
+from minicup_administration.core.models import Category, TeamInfo, Match, MatchTerm
 
 
 class TeamByMatchTimeFinder(object):
@@ -14,7 +14,7 @@ class TeamByMatchTimeFinder(object):
     def __init__(self, category: Category):
         self._category = category
 
-    def find_possible_teams(self, taken: datetime) -> Iterable[TeamInfo]:
+    def find_possible_teams(self, taken: datetime) -> Iterable[Iterable[TeamInfo]]:
         """
         Returns possible teams playing in given time.
         :param taken: time to detect
@@ -23,11 +23,14 @@ class TeamByMatchTimeFinder(object):
         if taken > datetime.now():
             logging.warning('Future taken date: {}.'.format(taken))
 
-        return self._category.match_category.filter(
-            match_term__start__time__lte=taken.time(),
-            match_term__end__time__gte=taken.time(),
-            match_term__day__date=taken.date(),
-        )
+        matches = self._category.match_category.filter(
+            match_term__start__time__range=(
+                (taken - MatchTerm.STANDARD_LENGTH).time(),
+                taken.time()
+            ),
+            match_term__day__day=taken.date(),
+        )  # type: Iterable[Match]
+        return tuple((match.home_team_info, match.away_team_info) for match in matches)
 
 
 __all__ = ['TeamByMatchTimeFinder']

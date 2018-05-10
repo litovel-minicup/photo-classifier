@@ -1,30 +1,32 @@
 # coding=utf-8
-from functools import total_ordering
+import colorsys
 from typing import NamedTuple
 
 
-@total_ordering
 class RGBColor(NamedTuple('RGBColor', [('red', float), ('green', float), ('blue', float)])):
-    pass
+    @property
+    def as_hsv(self):
+        return HSVColor(*colorsys.rgb_to_hsv(*self))
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            raise NotImplementedError()
-        return self == other
 
-    def __gt__(self, other):
-        if not isinstance(other, self.__class__):
-            raise NotImplementedError()
+class HSVColor(NamedTuple('HSVColor', [('hue', float), ('value', float), ('saturation', float)])):
 
-        return all(s > o for s, o in zip(self, other))
+    def is_in_hue_range(self, first: "HSVColor", second: "HSVColor", range_help=.005):
+        """
 
-    def __hash__(self):
-        return super().__hash__()
+        :param range_help: constant to make range bigger
+        :param first: first color in range
+        :param second: second color in range
+        :return: is self in range?
+        """
 
-    def in_range(self, first, second):
-        for my, *parts in zip(self, first, second):
-            from_part, to_part = sorted(parts)
-            if not (from_part <= my <= to_part):
+        from_hue, to_hue = sorted((first.hue, second.hue))
+        inner_range_size = to_hue - from_hue
+        if inner_range_size < 0.5:  # inner interval
+            if not ((from_hue - range_help) <= self.hue <= (to_hue + range_help)):
+                return False
+        else:  # circle interval
+            if not ((0. <= self.hue <= from_hue + range_help) or (to_hue - range_help <= self.hue <= 1.)):
                 return False
 
         return True

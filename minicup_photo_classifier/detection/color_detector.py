@@ -53,7 +53,7 @@ class ColorDetector(object):
             logging.warning('Empty window.')
             return None
 
-        return RGBColor(*np.nanmean(window, axis=(0, 1)).astype(int))
+        return RGBColor(*np.nanmean(window, axis=(0, 1)) / 255.)
 
 
 __all__ = ['ColorDetector']
