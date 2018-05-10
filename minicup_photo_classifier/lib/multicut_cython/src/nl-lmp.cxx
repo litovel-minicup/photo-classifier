@@ -159,7 +159,7 @@ nl_lmp::Problem<GRAPH> make_problem(andres::View<double> const& unaries, andres:
             }
         }
 
-    cout << numberOfVertices << " vertices and " << numberOfClasses << " classes and " << problem.originalGraph().numberOfEdges() << " edges" << endl;
+    cerr << numberOfVertices << " vertices and " << numberOfClasses << " classes and " << problem.originalGraph().numberOfEdges() << " edges" << endl;
 
     return problem;
 }
@@ -239,7 +239,7 @@ andres::Marray<size_t> make_and_solve(andres::View<double> const& unaries, andre
             energy += problem.getPairwiseCutCost(v0, v1, solution[v0].classIndex, solution[v1].classIndex);
     }
 
-    cout << "Objective: " << energy << endl;
+    cerr << "Objective: " << energy << endl;
 
     if (with_suppression)
         for (size_t v = 0; v < problem.numberOfVertices(); ++v)

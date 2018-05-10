@@ -6,7 +6,7 @@ from typing import Iterable
 from minicup_administration.core.models import Category, TeamInfo
 
 
-class TimeTeamSelector(object):
+class TeamByMatchTimeFinder(object):
     """
     Tries find possible teams  in category playing in given time.
     """
@@ -30,4 +30,4 @@ class TimeTeamSelector(object):
         )
 
 
-__all__ = ['TimeTeamSelector']
+__all__ = ['TeamByMatchTimeFinder']

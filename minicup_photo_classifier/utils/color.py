@@ -20,3 +20,11 @@ class RGBColor(NamedTuple('RGBColor', [('red', float), ('green', float), ('blue'
 
     def __hash__(self):
         return super().__hash__()
+
+    def in_range(self, first, second):
+        for my, *parts in zip(self, first, second):
+            from_part, to_part = sorted(parts)
+            if not (from_part <= my <= to_part):
+                return False
+
+        return True

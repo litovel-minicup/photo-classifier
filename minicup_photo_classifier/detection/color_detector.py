@@ -5,7 +5,7 @@ from typing import Optional
 
 import numpy as np
 
-from minicup_photo_classifier.utils.color import RGBColor
+from ..utils.color import RGBColor
 
 
 class ColorDetector(object):
@@ -14,7 +14,7 @@ class ColorDetector(object):
     Probably only from maximum peak in color model.
     """
 
-    WINDOW_HALF_SIZE = 5, 5
+    WINDOW_HALF_SIZE = 3, 3
     WINDOW_HALF_SIZE_X, WINDOW_HALF_SIZE_Y = WINDOW_HALF_SIZE
 
     def detect_color(self, image: np.ndarray, position: np.ndarray) -> Optional[RGBColor]:
