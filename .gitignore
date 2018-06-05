@@ -104,3 +104,7 @@ ENV/
 # custom
 data/
 .idea/
+minicup_photo_classifier/ui/pcqml.pro
+minicup_photo_classifier/ui/pcqml.pro.user
+*.cpp
+minicup_photo_classifier/ui/resources.py

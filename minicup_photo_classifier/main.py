@@ -3,3 +3,88 @@
 
 # TODO: process argv
 # TODO: delegate to PhotoClassifier
+import sys
+from glob import iglob
+from itertools import chain
+from os import W_OK, access
+from os.path import exists, getmtime, abspath, dirname, join
+
+__author__ = "Josef Kolář, Son Hai Nguyen"
+__copyright__ = "Copyright 2017, /dej/uran/dom team"
+__credits__ = ["Josef Kolář", "Son Hai Nguyen", "Martin Omacht", "Robert Navrátil"]
+__license__ = "GNU GPL Version 3"
+
+# definitive solution for calculator imports - due running from non standard working directories
+base_path = abspath(dirname(__file__))
+sys.path.insert(0, join(base_path, '..'))
+
+QRC_FILE = abspath(join(base_path, './ui/qml.qrc'))
+RESOURCES_FILE = abspath(join(base_path, './ui/resources.py'))
+
+
+def main():
+    if not update_qrc() and not exists(RESOURCES_FILE):
+        print('Application cannot be started due problems with resources file.')
+        sys.exit(1)
+
+    # local import due to resources.py
+    from minicup_photo_classifier.ui.app import App
+    app = App(sys.argv)
+
+    sys.exit(app.run())
+
+
+def update_qrc():
+    """
+    Conditionally updates the qrc file from QML and dependent resources.
+    :return: True, if file was successfully updated or update is not required, else None
+    """
+    file_types = 'qml qrc js ttf otf svg qm png'.split()
+
+    last_modification = max(
+        map(
+            getmtime,
+            chain(
+                *(
+                    file_ for file_ in (
+                    iglob(join(
+                        abspath(dirname(__file__)),
+                        '{base_path}/**/*.{file_type}'.format(
+                            file_type=file_type,
+                            base_path=base_path)
+                    ), recursive=True
+                    ) for file_type in file_types)
+                )
+            )
+        )
+    )
+
+    if exists(RESOURCES_FILE) and (last_modification - getmtime(RESOURCES_FILE)) < 2:
+        return True
+
+    if exists(RESOURCES_FILE) and not access(RESOURCES_FILE, W_OK):
+        print('Resources file {} is outdated.'.format(
+            RESOURCES_FILE
+        ), file=sys.stderr)
+        return True
+
+    print('Change in UI files detected, recompiling resources.py...', file=sys.stderr)
+    try:
+        open(RESOURCES_FILE, 'w')
+    except PermissionError:
+        print('Resources file {} not exists and is not writable, please call with write permissions.'.format(
+            RESOURCES_FILE
+        ), file=sys.stderr)
+        return False
+
+    from PyQt5.pyrcc_main import processResourceFile
+
+    if processResourceFile([QRC_FILE], RESOURCES_FILE, False):
+        print('Resources.py successfully recompiled.', file=sys.stderr)
+        return True
+
+    print('Problem with compiling resources.py.', file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()
