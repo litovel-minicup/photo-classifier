@@ -4,7 +4,7 @@ Item {
     id: component
 
     property var imagesData: []
-    readonly property alias imageIndex: internal.index
+    property alias imageIndex: internal.index
     readonly property alias selectedMarkerId: internal.selectedMarkerId
 
     onImagesDataChanged: {

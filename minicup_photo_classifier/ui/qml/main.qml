@@ -53,7 +53,7 @@ Window {
                     "origWidth": 1129,
                     "origHeight": 750,
                     "fileUrl": urls[key],
-                    "tagsSelection": ["sony1", "sony2", "sony3",
+                    "tagsSelection": ["", "sony1", "sony2", "sony3",
                         "sony4 dfsdfdsfsf sdfsfsdffdgfdg", "sony5", "sony6", "sony7", "sony8",
                         "sony9", "sony91", "sony10", "sony11", "sony12"],
                     "sharedTagsSelection": ["Pátek", "Sobotaa", "Neděle"],
@@ -184,9 +184,12 @@ Window {
     }
 
     Row {
+        id: controls
+
+        height: 40
+
         anchors.left: positioner.left
         anchors.right: verticalSelection.left
-        anchors.top: horizontalSelection.bottom
         anchors.bottom: positioner.bottom
 
         Controls.TextButton {
@@ -196,7 +199,7 @@ Window {
             hoverColor: "white"
 
             width: parent.width / 3
-            height: 40
+            height: parent.height
 
             onClicked: imageBrowser.prevImage()
         }
@@ -208,7 +211,7 @@ Window {
             hoverColor: "white"
 
             width: parent.width / 3
-            height: 40
+            height: parent.height
 
             onClicked: imageBrowser.nextImage()
         }
@@ -220,9 +223,32 @@ Window {
             hoverColor: "white"
 
             width: parent.width / 3
-            height: 40
+            height: parent.height
 
             onClicked: imageBrowser.nextUntaggedImage()
+        }
+    }
+
+    Rectangle {
+        color: "lightGray"
+
+        anchors.left: controls.left
+        anchors.right: controls.right
+        anchors.bottom: controls.top
+        anchors.top: horizontalSelection.bottom
+
+        Rectangle {
+            height: parent.height
+            width:  ((imageBrowser.imageIndex + 1) / wrapper.imagesData.length) * parent.width
+            color: "#1C70B7"
+        }
+
+        Text {
+            text: (imageBrowser.imageIndex + 1) + "/" + wrapper.imagesData.length
+
+            anchors.centerIn: parent
+            font.family: "Montserrat"
+            font.pixelSize: parent.height * 0.65
         }
     }
 }

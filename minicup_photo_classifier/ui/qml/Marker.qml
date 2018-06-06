@@ -26,6 +26,30 @@ Item {
         anchors.fill: parent
     }
 
+    Rectangle {
+        id: markerDescription
+
+        width: markerText.width + 2 * 8
+        height: markerText.height + 2 * 4
+        opacity: 0.6
+        color: "white"
+
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.bottom
+    }
+
+    Text {
+        id: markerText
+
+        color: "black"
+        text: parent.tag
+
+        font.pixelSize: 18
+        font.family: "Montserrat"
+
+        anchors.centerIn: markerDescription
+    }
+
     MouseArea {
         id: mouseArea
 
