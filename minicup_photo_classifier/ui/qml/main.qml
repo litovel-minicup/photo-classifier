@@ -46,8 +46,9 @@ Window {
 
         }
 
-//        Component.onCompleted: visible = true
-        Component.onCompleted: {
+        Component.onCompleted: visible = true
+
+
 //            // TODO change
 //            var urls = ["file:///C:/Users/Sony/Documents/photo-classifier/photos/test.png", "file:///C:/Users/Sony/Documents/photo-classifier/photos/test1.png",
 //                    "file:///C:/Users/Sony/Documents/photo-classifier/photos/test2.png"
