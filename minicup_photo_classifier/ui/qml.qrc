@@ -1,5 +1,17 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
+        <file>qml/ImageBrowser.qml</file>
+        <file>qml/VerticalTagSelection.qml</file>
+        <file>qml/items/SelectableTag.qml</file>
+        <file>qml/items/SelectableTagStyle.qml</file>
+        <file>qml/TagSelectionStyle.qml</file>
+        <file>qml/fonts/montserrat-light.ttf</file>
+        <file>qml/fonts/montserrat-regular.ttf</file>
+        <file>qml/Marker.qml</file>
+        <file>qml/HorizontalTagSelection.qml</file>
+        <file>qml/controls/Clickable.qml</file>
+        <file>qml/controls/FilledClickable.qml</file>
+        <file>qml/controls/TextButton.qml</file>
     </qresource>
 </RCC>
