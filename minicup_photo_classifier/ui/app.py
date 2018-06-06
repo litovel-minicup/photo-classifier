@@ -2,11 +2,13 @@
 import sys
 
 import sys
-import minicup_photo_classifier.ui.resources
+# noinspection PyUnresolvedReferences
+import ui.resources
+from minicup_photo_classifier.ui.wrapper import Wrapper
 from PyQt5.QtQml import QQmlApplicationEngine
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import (QSize, QtFatalMsg, QtCriticalMsg, QtWarningMsg, QtInfoMsg,
-                          qInstallMessageHandler, QtDebugMsg)
+                          qInstallMessageHandler, QtDebugMsg, QUrl)
 
 try:
     from termcolor import colored
@@ -48,7 +50,10 @@ class App(QApplication):
 
     def run(self):
         engine = QQmlApplicationEngine()
-        engine.load(":/qml/main.qml")
+        w = Wrapper()
+
+        engine.rootContext().setContextProperty("manager", w)
+        engine.load(QUrl("qrc:/qml/main.qml"))
 
         self.exec()
 

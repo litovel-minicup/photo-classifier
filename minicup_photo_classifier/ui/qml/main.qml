@@ -24,6 +24,14 @@ Window {
 
         // TODO bind
         property var imagesData: []
+        onImagesDataChanged: manager.imagesData = imagesData
+    }
+
+    Connections {
+        target: manager
+        onImageDataChanged: {
+            wrapper.imagesData = manager.imagesData
+        }
     }
 
     FileDialog {
@@ -34,64 +42,64 @@ Window {
             console.log("You chose: " + fileDialog.fileUrls)
 //            imageBrowser.images = fileDialog.fileUrls
             imageBrowser.imageIndex = -1
+            manager.classifyImages(fileDialog.fileUrls)
 
         }
 
 //        Component.onCompleted: visible = true
         Component.onCompleted: {
-            // TODO change
-            var urls = ["file:///C:/Users/Sony/Documents/photo-classifier/photos/test.png", "file:///C:/Users/Sony/Documents/photo-classifier/photos/test1.png",
-                    "file:///C:/Users/Sony/Documents/photo-classifier/photos/test2.png"
-                    ]
-            classifyImages(urls)
-        }
+//            // TODO change
+//            var urls = ["file:///C:/Users/Sony/Documents/photo-classifier/photos/test.png", "file:///C:/Users/Sony/Documents/photo-classifier/photos/test1.png",
+//                    "file:///C:/Users/Sony/Documents/photo-classifier/photos/test2.png"
+//                    ]
+//        }
 
-        function classifyImages(urls) {
-            // TODO use classifier
-            for(var key in urls) {
-                var imageData = {
-                    "origWidth": 1129,
-                    "origHeight": 750,
-                    "fileUrl": urls[key],
-                    "tagsSelection": ["", "sony1", "sony2", "sony3",
-                        "sony4 dfsdfdsfsf sdfsfsdffdgfdg", "sony5", "sony6", "sony7", "sony8",
-                        "sony9", "sony91", "sony10", "sony11", "sony12"],
-                    "sharedTagsSelection": ["Pátek", "Sobotaa", "Neděle"],
-                    "markers": {
-                        0: {
-                            "id": 0,
-                            "x": 100,
-                            "y": 100,
-                            "tag": "sony1"
-                        },
+//        function classifyImages(urls) {
+//            // TODO use classifier
+//            for(var key in urls) {
+//                var imageData = {
+//                    "origWidth": 1129,
+//                    "origHeight": 750,
+//                    "fileUrl": urls[key],
+//                    "tagsSelection": ["", "sony1", "sony2", "sony3",
+//                        "sony4 dfsdfdsfsf sdfsfsdffdgfdg", "sony5", "sony6", "sony7", "sony8",
+//                        "sony9", "sony91", "sony10", "sony11", "sony12"],
+//                    "sharedTagsSelection": ["Pátek", "Sobotaa", "Neděle"],
+//                    "markers": {
+//                        0: {
+//                            "id": 0,
+//                            "x": 100,
+//                            "y": 100,
+//                            "tag": "sony1"
+//                        },
 
-                        1: {
-                            "id": 1,
-                            "x": 400,
-                            "y": 150,
-                            "tag": "sony1"
-                        }
-                    }
-                }
+//                        1: {
+//                            "id": 1,
+//                            "x": 400,
+//                            "y": 150,
+//                            "tag": "sony1"
+//                        }
+//                    }
+//                }
 
-                if(key == 2) {
-                imageData.markers["2"] = {
-                    "id": 2,
-                    "x": 200,
-                    "y": 150,
-                    "tag": null
-                }
-                }
+//                if(key == 2) {
+//                imageData.markers["2"] = {
+//                    "id": 2,
+//                    "x": 200,
+//                    "y": 150,
+//                    "tag": null
+//                }
+//                }
 
-                if(key == 0)
-                    imageData["sharedTags"] = ["Pátek"]
-                else
-                    imageData["sharedTags"] = []
+//                if(key == 0)
+//                    imageData["sharedTags"] = ["Pátek"]
+//                else
+//                    imageData["sharedTags"] = []
 
-                wrapper.imagesData.push(imageData)
-                wrapper.imagesDataChanged()
-            }
-        }
+//                wrapper.imagesData.push(imageData)
+//                wrapper.imagesDataChanged()
+//            }
+//        }
     }
 
     Item {
@@ -198,7 +206,7 @@ Window {
             color: "gray"
             hoverColor: "white"
 
-            width: parent.width / 3
+            width: parent.width / 5
             height: parent.height
 
             onClicked: imageBrowser.prevImage()
@@ -210,7 +218,7 @@ Window {
             color: "gray"
             hoverColor: "white"
 
-            width: parent.width / 3
+            width: parent.width / 5
             height: parent.height
 
             onClicked: imageBrowser.nextImage()
@@ -222,10 +230,35 @@ Window {
             color: "gray"
             hoverColor: "white"
 
-            width: parent.width / 3
+            width: parent.width / 5
             height: parent.height
 
             onClicked: imageBrowser.nextUntaggedImage()
+        }
+
+        Controls.TextButton {
+            buttonText: "Confirm"
+            textColor: "white"
+            color: "gray"
+            hoverColor: "white"
+
+            width: parent.width / 5
+            height: parent.height
+
+//            onClicked: imageBrowser.nextUntaggedImage()
+            onClicked: manager.confirmImage(wrapper.imagesData[imageBrowser.imageIndex].fileUrl)
+        }
+
+        Controls.TextButton {
+            buttonText: "Delete"
+            textColor: "white"
+            color: "gray"
+            hoverColor: "white"
+
+            width: parent.width / 5
+            height: parent.height
+
+            onClicked: manager.deleteImage(wrapper.imagesData[imageBrowser.imageIndex].fileUrl)
         }
     }
 
