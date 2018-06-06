@@ -1,6 +1,5 @@
 cycler==0.10.0
 decorator==4.2.1
--e git+git@github.com:thejoeejoee/deepgaze.git@28500769862f7eac06efea9b6b5fbdecc057fdef#egg=deepgaze
 ipython==6.2.1
 ipython-genutils==0.2.0
 jedi==0.11.1
@@ -26,3 +25,14 @@ simplegeneric==0.8.1
 six==1.11.0
 traitlets==4.3.2
 wcwidth==0.1.7
+django
+keras
+tensorflow
+mysqlclient
+scp
+paramiko
+h5py
+easydict
+munkres
+pycocotools
+cython
