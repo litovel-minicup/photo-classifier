@@ -42,7 +42,8 @@ Window {
             console.log("You chose: " + fileDialog.fileUrls)
 //            imageBrowser.images = fileDialog.fileUrls
             imageBrowser.imageIndex = -1
-            manager.classifyImages(fileDialog.fileUrls)
+            var files = fileDialog.fileUrls
+            manager.classifyImages(files)
 
         }
 
@@ -152,8 +153,10 @@ Window {
         tags: (imageBrowser.selectedMarkerId !== "" && imageBrowser.imageIndex !== -1)
               ?wrapper.imagesData[imageBrowser.imageIndex].tagsSelection :[]
 
+        height: parent.height * 0.8
+
+
         anchors.top: positioner.top
-        anchors.bottom: positioner.bottom
         anchors.left: imageBrowser.right
         anchors.right: positioner.right
 
@@ -170,6 +173,7 @@ Window {
     HorizontalTagSelection {
         id: horizontalSelection
 
+        itemColor: "#262626"
         color: "#262626"
         // TODO on image change change shred selected tags
         tags: (imageBrowser.imageIndex !== -1)
@@ -192,6 +196,27 @@ Window {
         }
     }
 
+    VerticalTagSelection {
+        id: categorySelection
+
+        itemColor: "black"
+        color: "black"
+        // TODO on image change change shred selected tags
+        tags: ["Mladsí", "Starší"]
+
+        anchors.top: verticalSelection.bottom
+        anchors.left: verticalSelection.left
+        anchors.right: verticalSelection.right
+        anchors.bottom: positioner.bottom
+
+        onSelectedTagsChanged: {
+            if(selectedTags.length == 0)
+                return
+
+            manager.setCategory(selectedTags[0])
+        }
+    }
+
     Row {
         id: controls
 
@@ -207,7 +232,7 @@ Window {
             color: "gray"
             hoverColor: "white"
 
-            width: parent.width / 5
+            width: parent.width / 6
             height: parent.height
 
             onClicked: imageBrowser.prevImage()
@@ -219,7 +244,7 @@ Window {
             color: "gray"
             hoverColor: "white"
 
-            width: parent.width / 5
+            width: parent.width / 6
             height: parent.height
 
             onClicked: imageBrowser.nextImage()
@@ -231,7 +256,7 @@ Window {
             color: "gray"
             hoverColor: "white"
 
-            width: parent.width / 5
+            width: parent.width / 6
             height: parent.height
 
             onClicked: imageBrowser.nextUntaggedImage()
@@ -243,11 +268,23 @@ Window {
             color: "gray"
             hoverColor: "white"
 
-            width: parent.width / 5
+            width: parent.width / 6
             height: parent.height
 
 //            onClicked: imageBrowser.nextUntaggedImage()
             onClicked: manager.confirmImage(wrapper.imagesData[imageBrowser.imageIndex].fileUrl)
+        }
+
+        Controls.TextButton {
+            buttonText: "Update model"
+            textColor: "white"
+            color: "gray"
+            hoverColor: "white"
+
+            width: parent.width / 6
+            height: parent.height
+
+            onClicked: manager.updateModel(wrapper.imagesData[imageBrowser.imageIndex].fileUrl)
         }
 
         Controls.TextButton {
@@ -256,7 +293,7 @@ Window {
             color: "gray"
             hoverColor: "white"
 
-            width: parent.width / 5
+            width: parent.width / 6
             height: parent.height
 
             onClicked: manager.deleteImage(wrapper.imagesData[imageBrowser.imageIndex].fileUrl)

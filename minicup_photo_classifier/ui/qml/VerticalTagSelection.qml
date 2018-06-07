@@ -6,6 +6,7 @@ Rectangle {
 
     property var tags: []
     property var selectedTags: []
+    property color itemColor: "#383838"
 
     Flickable {
         contentWidth: items.width
@@ -29,7 +30,7 @@ Rectangle {
                     tag: modelData
 
                     style: Items.SelectableTagStyle {
-                        color: "#383838"
+                        color: component.itemColor
                         textColor: "lightGray"
                         hoverColor: "white"
                         selectedColor: "#1C70B7"
