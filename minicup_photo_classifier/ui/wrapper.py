@@ -15,6 +15,14 @@ class Wrapper(QObject):
         }
 
     @pyqtSlot(str)
+    def updateModel(self, url):
+        pass
+
+    @pyqtSlot(str)
+    def setCategory(self, url):
+        pass
+
+    @pyqtSlot(str)
     def confirmImage(self, url):
         pass
 
